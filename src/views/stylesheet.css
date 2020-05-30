@@ -1,0 +1,44 @@
+.game-grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    border: 2px solid black; 
+}
+
+.game-grid-item {
+    background-color: #ff7600a3;
+    font-size: 5vh;
+    border: 2px solid black;
+    text-align: center;
+    padding: 5%;
+}
+
+.start-button {
+    position: absolute;
+    margin-left: auto;
+    left: 50%;
+    top: 5%;
+    display: inline-block;
+    padding: 0.35em 1.2em;
+    border: 0.1em solid #FFFFFF;
+    margin: 0 0 0 -2.7em;
+    border-radius: 0.12em;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Roboto',sans-serif;
+    font-weight: 300;
+    color: #FFFFFF;
+    text-align: center;
+    transition: all 0.2s;
+    /* font-family: fantasy; */
+    font-size: 25px;
+    background-color: black;
+}
+
+.start-button:hover {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+
+
+
