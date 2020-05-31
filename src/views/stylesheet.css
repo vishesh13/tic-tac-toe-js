@@ -39,6 +39,28 @@
     color: #000000;
 }
 
+.para{
+    position: absolute;
+    margin-left: auto;
+    left: 50%;
+    top: 5%;
+    color: #FFFFFF;
+    text-align: center;
+    background-color: black;
+}
+
+.winner {
+    border: 5px solid steelblue;
+    height: 100%;
+    background-color: unset;
+    font-size: large;
+    padding: 5px 5px 5px 2px;
+    text-align: center;
+}
+
+h1 {
+    color: white;
+}
 
 
 
