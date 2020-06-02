@@ -8,7 +8,7 @@ import '../views/stylesheet.css';
  * @param {states and handler functions} props 
  */
 const TicTacToeView = props => {
-    let buttonName = props.toStartGame ? 'RESTART' : 'START';
+    let buttonName = props.toStartGame || props.winner === 'tie' ? 'RESTART' : 'START';
     let content = (props.toStartGame ? (
         <div className="game-grid-container">
             <ButtonBox handleBoxClick={() => props.handleBoxClick(0)} boxesValue={props.boxesValue[0].value} />

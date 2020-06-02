@@ -21,12 +21,19 @@ class TicTacToeContainer extends React.Component {
     }
 
     /**
-     * Using lifecycle method to get game's winner
-     * 
+     * Using lifecycle method to trigger bot's mvoement
      */
-    // componentDidUpdate() {
-    //     this.findWinner();
-    // }
+    componentDidUpdate() {
+        if (this.state.isBotNext) {
+            const { boxesValue } = this.state;
+            let pos = boxesValue.filter((i) => i.key === 'X').length >= 2 ? this.bestmove() : this.botsmove();
+            boxesValue[pos] = { key: pos, value: '0' };
+            this.findWinner();
+            this.setState({
+                isBotNext: false
+            })
+        }
+    }
 
     /**
      * 
@@ -35,24 +42,47 @@ class TicTacToeContainer extends React.Component {
     handleBoxClick(index) {
         const { boxesValue } = this.state;
         this.setState(prevState => {
-            boxesValue[index] = { key: index, value: 'X' };
             if (!prevState.isBotNext) {
-                this.findWinner();
+                boxesValue[index] = { key: index, value: 'X' };
                 return {
                     isBotNext: true
                 }
             }
-            if (this.state.isBotNext) {
-                this.setState(() => {
-                    boxesValue[index] = { key: index, value: '0' };
-                    this.findWinner();
-                    return {
-                        isBotNext: false
-                    }
-                })
-            }
-
         })
+    }
+
+    /**
+     * handler function to start game
+     * 
+     * @param {event} e 
+     */
+    handleStartClick(e) {
+        if (e) {
+            this.setState({
+                boxesValue: Array(9).fill({ key: '', value: '' }),
+                toStartGame: true,
+                isBotNext: false,
+                winner: ''
+            })
+        }
+    }
+
+    /**
+     * handler function to reset game stats state
+     * 
+     * @param {event} e 
+     */
+    handleRestartClick(e) {
+        if (e) {
+            this.setState(() => {
+                return {
+                    boxesValue: Array(9).fill({ key: '', value: '' }),
+                    toStartGame: true,
+                    isBotNext: false,
+                    value: ''
+                }
+            })
+        }
     }
 
     /**
@@ -85,39 +115,65 @@ class TicTacToeContainer extends React.Component {
                     winner: boxesValue[a].value
                 })
                 // return boxesValue[a].value
+            } else if (this.getEmptyCells().length === 0) {
+                this.setState({
+                    toStartGame: false,
+                    winner: 'tie'
+                })
             }
         }
     }
 
     /**
-     * handler function to start game
-     * 
-     * @param {event} e 
+     * Function to make Bot's move when two or more cells are occupied
      */
-    handleStartClick(e) {
-        if (e) {
-            this.setState({
-                toStartGame: true
-            })
+    bestmove = () => {
+        const rows = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ]
+
+        // Iterate over array with winning combinations
+        for (let i = 0; i < rows.length; i++) {
+            if (rows[i].filter((i) => i === '0').length === 2) {
+                return rows[i].findIndex(element => element === '');
+            }
         }
     }
 
     /**
-     * handler function to reset game stats state
-     * 
-     * @param {event} e 
+     * function to get positions of empty cells
      */
-    handleRestartClick(e) {
-        if (e) {
-            this.setState(() => {
-                return {
-                    boxesValue: Array(9).fill({ key: '', value: '' }),
-                    toStartGame: true,
-                    isBotNext: false,
-                    value: ''
-                }
-            })
+    getEmptyCells = () => {
+        const { boxesValue } = this.state;
+        let emptyBoxes = [];
+        for (let i = 0; i < boxesValue.length; i++) {
+            if (boxesValue[i].key === '') {
+                emptyBoxes.push(i);
+            }
         }
+        return emptyBoxes;
+    }
+
+    /**
+     * function to make bot's move for random box cell
+     */
+    botsmove = () => {
+        const { boxesValue } = this.state;
+        let emptyBoxes = this.getEmptyCells();
+        for (let i = 0; i < boxesValue.length; i++) {
+            if (boxesValue[i].key === '') {
+                emptyBoxes.push(i);
+            }
+        }
+        let value = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
+        return value;
     }
 
     render() {
