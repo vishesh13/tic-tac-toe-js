@@ -79,7 +79,7 @@ class TicTacToeContainer extends React.Component {
                     boxesValue: Array(9).fill({ key: '', value: '' }),
                     toStartGame: true,
                     isBotNext: false,
-                    value: ''
+                    winner: ''
                 }
             })
         }
@@ -111,13 +111,13 @@ class TicTacToeContainer extends React.Component {
             if (boxesValue[a].value !== '' && boxesValue[a].value === boxesValue[b].value && boxesValue[a].value === boxesValue[c].value) {
                 // Return the winner ('x' or 'o')
                 this.setState({
-                    toStartGame: false,
+                    // toStartGame: false,
                     winner: boxesValue[a].value
                 })
                 // return boxesValue[a].value
             } else if (this.getEmptyCells().length === 0) {
                 this.setState({
-                    toStartGame: false,
+                    // toStartGame: false,
                     winner: 'tie'
                 })
             }
