@@ -8,9 +8,7 @@ import '../views/stylesheet.css';
 const WinnerView = (props) => {
     let content = props.winner === 'tie' ? 'Game tied' : `Winner is ${props.winner}`;
     return (
-    //<span id="winner" className="winner">
         content
-    //</span>
     );
 }
 
