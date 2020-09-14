@@ -9,7 +9,7 @@ import '../views/stylesheet.css';
  */
 const TicTacToeView = props => {
     let buttonName = props.toStartGame || props.winner === 'tie' ? 'RESTART' : 'START';
-    let content = (props.toStartGame ? (
+    let gameContent = (props.toStartGame ? (
         <div className="game-grid-container">
             <ButtonBox handleBoxClick={() => props.handleBoxClick(0)} boxesValue={props.boxesValue[0].value} />
             <ButtonBox handleBoxClick={() => props.handleBoxClick(1)} boxesValue={props.boxesValue[1].value} />
@@ -21,12 +21,14 @@ const TicTacToeView = props => {
             <ButtonBox handleBoxClick={() => props.handleBoxClick(7)} boxesValue={props.boxesValue[7].value} />
             <ButtonBox handleBoxClick={() => props.handleBoxClick(8)} boxesValue={props.boxesValue[8].value} />
         </div>
-    ) : (props.winner !== '' ? <WinnerView winner={props.winner} /> : ''));
+    ) : null);
+    let winnerContent = (props.winner ? <WinnerView winner={props.winner} /> : '');
     return (
-        <div>
+        <div className="container">
             <button id="GAME_START_BUTTON" className="start-button" onClick={!props.toStartGame ? props.handleStartClick : props.handleRestartClick}>{buttonName}</button>
-            <div style={{ "padding": "10%" }}>
-                {content}
+            <div className="winner">{winnerContent}</div>
+            <div>
+                {gameContent}
             </div >
         </div >
     );

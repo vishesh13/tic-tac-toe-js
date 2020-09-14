@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TicTacToeContainer from './containers/TicTacToeContainer';
 
-class App extends Component {
+class TicTacToeApp extends Component {
   render() {
     return (
       <TicTacToeContainer />
@@ -9,4 +9,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default TicTacToeApp;

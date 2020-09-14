@@ -24,9 +24,10 @@ class TicTacToeContainer extends React.Component {
      * Using lifecycle method to trigger bot's mvoement
      */
     componentDidUpdate() {
-        if (this.state.isBotNext) {
-            const { boxesValue } = this.state;
-            let pos = boxesValue.filter((i) => i.key === 'X').length >= 2 ? this.bestmove() : this.botsmove();
+        const { isBotNext, boxesValue } = this.state;
+        if (isBotNext) {
+            let nextMove = boxesValue.filter((i) => i.value === 'X');
+            let pos = nextMove.length >= 2 ? this.bestmove() : this.botsmove();
             boxesValue[pos] = { key: pos, value: '0' };
             this.findWinner();
             this.setState({
@@ -79,7 +80,7 @@ class TicTacToeContainer extends React.Component {
                     boxesValue: Array(9).fill({ key: '', value: '' }),
                     toStartGame: true,
                     isBotNext: false,
-                    value: ''
+                    winner: ''
                 }
             })
         }
@@ -104,30 +105,32 @@ class TicTacToeContainer extends React.Component {
         ]
 
         // Iterate over array with winning combinations
-        for (let i = 0; i < rows.length; i++) {
-            const [a, b, c] = rows[i]
+        //for (let i = 0; i < rows.length; i++) 
+        rows.forEach(row => {
+            const [a, b, c] = row;
 
             // Check if the game board contains winning combination
             if (boxesValue[a].value !== '' && boxesValue[a].value === boxesValue[b].value && boxesValue[a].value === boxesValue[c].value) {
                 // Return the winner ('x' or 'o')
                 this.setState({
-                    toStartGame: false,
                     winner: boxesValue[a].value
                 })
-                // return boxesValue[a].value
             } else if (this.getEmptyCells().length === 0) {
                 this.setState({
-                    toStartGame: false,
                     winner: 'tie'
                 })
             }
-        }
+        })
     }
 
     /**
      * Function to make Bot's move when two or more cells are occupied
      */
     bestmove = () => {
+        const { boxesValue } = this.state;
+        let emptyBoxes = this.getEmptyCells();
+        let nextMove = boxesValue.filter((i) => i.value === '0');
+        let nexPos = '';
         const rows = [
             [0, 1, 2],
             [3, 4, 5],
@@ -139,12 +142,32 @@ class TicTacToeContainer extends React.Component {
             [2, 4, 6]
         ]
 
-        // Iterate over array with winning combinations
-        for (let i = 0; i < rows.length; i++) {
-            if (rows[i].filter((i) => i === '0').length === 2) {
-                return rows[i].findIndex(element => element === '');
+
+        rows.forEach((row, index) => {
+            if (nextMove.length >= 2 && row.includes(nextMove[0].key) && row.includes(nextMove[1].key)) {
+                nexPos = rows[index].filter(value => value !== nextMove[0].key && value !== nextMove[1].key)[0];
+                if (!emptyBoxes.includes(nexPos)) {
+                    nexPos = '';
+                }
             }
+        })
+
+        if (nexPos === '') {
+            nextMove = boxesValue.filter((i) => i.value === 'X');
+            rows.forEach((row, index) => {
+                if (row.includes(nextMove[0].key) && row.includes(nextMove[1].key)) {
+                    nexPos = rows[index].filter(value => value !== nextMove[0].key && value !== nextMove[1].key)[0];
+                    if (!emptyBoxes.includes(nexPos)) {
+                        nexPos = '';
+                    }
+                }
+            })
         }
+
+        if (nexPos === '') {
+            nexPos = this.botsmove();
+        }
+        return nexPos;
     }
 
     /**
@@ -153,11 +176,11 @@ class TicTacToeContainer extends React.Component {
     getEmptyCells = () => {
         const { boxesValue } = this.state;
         let emptyBoxes = [];
-        for (let i = 0; i < boxesValue.length; i++) {
-            if (boxesValue[i].key === '') {
-                emptyBoxes.push(i);
-            }
-        }
+
+        boxesValue.forEach((cell, index) => {
+            if (cell.key === '')
+                emptyBoxes.push(index);
+        });
         return emptyBoxes;
     }
 
@@ -165,13 +188,7 @@ class TicTacToeContainer extends React.Component {
      * function to make bot's move for random box cell
      */
     botsmove = () => {
-        const { boxesValue } = this.state;
         let emptyBoxes = this.getEmptyCells();
-        for (let i = 0; i < boxesValue.length; i++) {
-            if (boxesValue[i].key === '') {
-                emptyBoxes.push(i);
-            }
-        }
         let value = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
         return value;
     }
@@ -184,4 +201,3 @@ class TicTacToeContainer extends React.Component {
 }
 
 export default TicTacToeContainer;
-

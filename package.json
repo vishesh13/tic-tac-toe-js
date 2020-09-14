@@ -1,7 +1,7 @@
 {
   "homepage": "https://vishesh13.github.io/tic-tac-toe-js",
   "name": "tic-tac-toe-js",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "react": "^16.13.1",

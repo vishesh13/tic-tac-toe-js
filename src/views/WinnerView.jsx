@@ -6,10 +6,10 @@ import '../views/stylesheet.css';
  * @param {winner} props 
  */
 const WinnerView = (props) => {
-    let content = props.winner === 'tie' ? <h1>Game tied</h1> : <h1>Winner is {props.winner}</h1>;
-    return (<div id="winner" className="winner">
-        {content}
-    </div>);
+    let content = props.winner === 'tie' ? 'Game tied' : `Winner is ${props.winner}`;
+    return (
+        content
+    );
 }
 
 export default WinnerView;
